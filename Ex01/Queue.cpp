@@ -27,3 +27,4 @@ Queue::~Queue()
 {
 	delete m_Queue;
 }
+

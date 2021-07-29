@@ -4,11 +4,12 @@ class Graph
 {
 private:
 	List** m_Graph;
+	int m_NumberOfVertex; //n
+	int const inf = -1;
 public :
 	Graph(int n);
 
-	//input: amount of vertex n
-	void MakeEmptyGraph(int n); 
+	void MakeEmptyGraph(); 
 
 	//input: vertex u, vertex v
 	//output: return if there is an edge between u and v
@@ -28,6 +29,6 @@ public :
 
 	//input: vertex u
 	//
-	void BFS(int u);
+	int* BFS(int s);
 };
 
