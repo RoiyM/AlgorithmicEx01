@@ -5,11 +5,19 @@ class Graph
 private:
 	List** m_Graph;
 	int m_NumberOfVertex; //n
-	int const inf = -1;
+
 public :
+	int static const inf = -1;
+	
 	Graph(int n);
 
 	void MakeEmptyGraph(); 
+
+	int GetAmountOfVertex();
+
+	//int GetAmountOfArcs();
+
+	Graph* Transpose();
 
 	//input: vertex u, vertex v
 	//output: return if there is an edge between u and v
@@ -31,4 +39,3 @@ public :
 	//
 	int* BFS(int s);
 };
-

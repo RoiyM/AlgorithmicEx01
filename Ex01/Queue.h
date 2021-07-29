@@ -13,4 +13,3 @@ public:
 	int Dequeue();
 	~Queue();
 };
-

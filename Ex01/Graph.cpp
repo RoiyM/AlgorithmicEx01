@@ -8,6 +8,24 @@ Graph::Graph(int n)
 	MakeEmptyGraph();
 }
 
+Graph* Graph::Transpose()
+{
+	Graph* transposedGraph = new Graph(m_NumberOfVertex);
+
+	for (int i = 0; i < m_NumberOfVertex; i++)
+	{
+		node* current = this->GetAdjList(i)->GetHead();
+		while (current != nullptr)
+		{
+			transposedGraph->AddEdge(current->data, i);
+			current = current->next;
+		}
+	}
+
+	return transposedGraph;
+}
+
+
 void Graph::MakeEmptyGraph()
 {
 	m_Graph = new List * [m_NumberOfVertex];
@@ -17,6 +35,10 @@ void Graph::MakeEmptyGraph()
 	}
 }
 
+int Graph::GetAmountOfVertex()
+{
+	return m_NumberOfVertex;
+}
 
 bool Graph::IsAdjacent(int u, int v)
 {
@@ -76,9 +98,7 @@ int* Graph::BFS(int s)
 		}
 
 		delete adjList;
-	
 	}
 
 	return dArray;
 }
-
