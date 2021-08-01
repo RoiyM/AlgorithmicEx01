@@ -74,9 +74,11 @@ int* Graph::BFS(int s)
 {
 	Queue queue;
 	int* dArray = new int[m_NumberOfVertex];
+	int* pArray = new int[m_NumberOfVertex];
 	for (int i = 0; i < m_NumberOfVertex; i++)
 	{
-		dArray[i] = inf;	
+		dArray[i] = inf;
+		pArray[1] = inf;
 	}
 
 	queue.Enqueue(s);
@@ -92,6 +94,7 @@ int* Graph::BFS(int s)
 			if (dArray[current->data] == inf)
 			{
 				dArray[current->data] = dArray[u] + 1;
+				pArray[current->data] = u;
 				queue.Enqueue(current->data);
 			}
 			current = current->next;
@@ -100,5 +103,6 @@ int* Graph::BFS(int s)
 		delete adjList;
 	}
 
+	delete[] pArray;
 	return dArray;
 }

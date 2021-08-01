@@ -1,6 +1,8 @@
 #include <iostream>
 #include <fstream>
+#include <iomanip>
 #include <string>
+#include <chrono>
 #include "Graph.h"
 using namespace std;
 
@@ -13,81 +15,34 @@ void HandleFailFileOpen(ios& file)
 	}
 }
 
-bool IsNumber(string input)
-{
-	for (int i = 0; i < input.size(); i++)
-	{
-		if ((input[i] < '0' || input[i] > '9') && input[0] != '-')
-		{
-			return false;
-		}
-	}
-
-	return true;
-}
-
 void HandleWrongInput()
 {
-	cout << "wrong input!";
+	cout << "invalid input";
 	exit(1);
 }
 
-int main()
+bool IsInRange(int num, int min, int max)
 {
-	int n, k, i = 0;
-	string inputFileName, outputFileName, input;
-	cin >> n;
-	cin >> k;
+	return (num >= min && num <= max);
+}
 
-	if (n < 1 || k < 1)
+void ReadGraph(Graph& io_Graph)
+{
+	int x, y;
+	while (!cin.eof())
 	{
-		HandleWrongInput();
-	}
-
-	cin >> inputFileName;
-	cin >> outputFileName;
-
-	int* arr = new int[n];
-
-	ifstream inputFile(inputFileName);
-	HandleFailFileOpen(inputFile);
-
-	while (!inputFile.eof())
-	{
-		inputFile >> input;
-		if (!IsNumber(input))
+		cin >> x;
+		if (!IsInRange(x, 1, io_Graph.GetAmountOfVertex()))
 		{
 			HandleWrongInput();
 		}
-		arr[i++] = stoi(input);
+		cin >> y;
+		if (!IsInRange(y, 1, io_Graph.GetAmountOfVertex()))
+		{
+			HandleWrongInput();
+		}
+		io_Graph.AddEdge(x, y);
 	}
-
-	if (i != n)
-	{
-		HandleWrongInput();
-	}
-
-	inputFile.close();
-
-	/////////////////////
-
-	ofstream outputFile(outputFileName);
-	HandleFailFileOpen(outputFile);
-
-	for (int i = 0; i < n; i++)
-	{
-		outputFile << arr[i] << endl;
-	}
-
-	delete[] arr;
-	outputFile.close();
-}
-void GetInput()
-{
-	int n, s, t;
-	cin >> n;
-	cin >> s;
-	cin >> t;
 }
 
 Graph* FindShortestPathFromSToT(Graph graph, int s, int t)
@@ -98,7 +53,7 @@ Graph* FindShortestPathFromSToT(Graph graph, int s, int t)
 	for (int i = 0; i < n; i++)
 	{
 		node* current = graph.GetAdjList(i)->GetHead();
-		while (current!=nullptr)
+		while (current != nullptr)
 		{
 			if (dArray[current->data] != dArray[i] + 1)
 			{
@@ -125,5 +80,38 @@ Graph* FindShortestPathFromSToT(Graph graph, int s, int t)
 	}//now g^t=h^t
 
 	return trasposedGraph->Transpose(); //h
+
+}
+
+int main()
+{
+	int n, s, t;
+	cin >> n;
+	cin >> s;
+	cin >> t;
+
+	if (n < 0 || !IsInRange(t, 1, n) || !IsInRange(s, 1, n))
+	{
+		HandleWrongInput();
+	}
+	Graph graph(n);
+	ReadGraph(graph);
+
+	auto start = chrono::high_resolution_clock::now();
+	// unsync the I/O of C and C++.
+	ios_base::sync_with_stdio(false);
+	Graph* resGraph = FindShortestPathFromSToT(graph, s, t);
+	auto end = chrono::high_resolution_clock::now();
+	// Calculating total time taken by the program.
+	double time_taken =
+		chrono::duration_cast<chrono::nanoseconds>(end - start).count();
+	time_taken *= 1e-9;
+	ofstream myfile("Measure.txt"); // The name of the file
+	HandleFailFileOpen(myfile);
+
+	myfile << "Time taken by function <name-of-fun> is : " << fixed
+		<< time_taken << setprecision(9);
+	myfile << " sec" << endl;
+	myfile.close();
 
 }
