@@ -6,6 +6,16 @@
 #include "Graph.h"
 using namespace std;
 
+/// <summary>
+/// this program gets a graph from the user and  print the graph of the shortest routes from vertex s to vertex t
+/// uses: Graph, Queue and List.
+/// input: the amount of vertex =n
+///		   the start vertex		=s
+///		   the finish vertex	=t
+/// output: print edges of the graph of the shortest routes from vertex s to vertex t
+///			and after that print  the time it took to the function to run.
+/// </summary>
+
 void HandleWrongInput()
 {
 	cout << "invalid input";
@@ -78,11 +88,13 @@ Graph* FindShortestPathFromSToT(Graph* graph, int s, int t)
 				trasposedGraph->RemoveEdge(i, prev->data);
 			}
 		}
-	}//now g_h^t has become h^t
+	} //now g_h^t has become h^t
 
-	Graph* hTransposeGraph = trasposedGraph->Transpose();//h
+	Graph* hTransposeGraph = trasposedGraph->Transpose(); //h
 
 	delete trasposedGraph;
+	delete[] dArray;
+	delete[] dArrayTrasposed;
 
 	return hTransposeGraph; 
 }
@@ -94,7 +106,7 @@ int main()
 	cin >> s;
 	cin >> t;
 
-	if (n < 0 || !IsInRange(t, 1, n) || !IsInRange(s, 1, n))
+	if (n < 0 || !IsInRange(t, 1, n) || !IsInRange(s, 1, n)) //checks if vertices s and t is in graph
 	{
 		HandleWrongInput();
 	}
@@ -107,14 +119,12 @@ int main()
 	Graph* resGraph = FindShortestPathFromSToT(graph, s, t);
 	auto end = chrono::high_resolution_clock::now();
 	// Calculating total time taken by the program.
-	double time_taken =
-		chrono::duration_cast<chrono::nanoseconds>(end - start).count();
+	double time_taken = chrono::duration_cast<chrono::nanoseconds>(end - start).count();
 	time_taken *= 1e-9;
-	
+
+	resGraph->PrintGraph();
 	cout << "Time taken by function <FindShortestPathFromSToT> is : " << fixed
 		<< time_taken << setprecision(9) << " sec" << endl;
-
-	resGraph->printGraph();
 	delete graph;
 	delete resGraph;
 }

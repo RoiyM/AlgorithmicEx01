@@ -1,29 +1,4 @@
 #pragma once
-/*
-struct node
-{
-    int data;
-    node* next;
-};
-
-class List
-{
-private:
-    node* m_m_Head;
-    node* m_m_Tail;
-public:
-    List();
-    bool IsEmpty();
-    node* Getm_Head()const;
-    node* Getm_Tail()const;
-    ~List();
-    void AddTom_Tail(int i_Data);
-    void AddTom_Head(int i_Data);
-    void Deletem_Tail();
-    void DeleteData(int i_DataToDelete);
-};
-
-*/
 
 struct node
 {
@@ -38,29 +13,40 @@ private:
     node* m_Head;
     node* m_Tail;
 public:
-
+    //ctor
     List();
 
+    //output: returns if the list is empty
     bool IsEmpty();
 
-
+    //output: return the head of the list
     node* GetHead();
 
+    //output: return the tail of the list
     node* GetTail();
 
+    //input: data
+    //output: insert the data to the head of the list
     void AddToHead(int i_DataToAdd);
 
+    //input: data
+    //output: insert the data to the tail of the list
     void AddToTail(int i_DataToAdd);
 
-    //void insertAfter(int old, int i_DataToAdd);
-
+    //deletes the head of the list
     int DeleteHead();
     
+    //deletes the tail of the list
     int DeleteTail();
 
+    //input: data of the item that we want to delete
+    //output: delete the item with that data from the list (if its exit)
     int DeleteItem(int i_DataToDelete);
 
+    //input: data of the item that we want to find
+    //output: returns the item with that data from the list (if its exit)
     node* SearchItem(int i_DataToSearch);
 
+    //dtor
     ~List();
 };

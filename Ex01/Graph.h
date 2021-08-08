@@ -8,17 +8,25 @@ private:
 
 public :
 	int static const inf = -1;
-	
+	//ctor
 	Graph(int n);
 
-	void printGraph();
+	//dtor
+	~Graph();
 
+	//returns if the graph is empty
+	bool IsEmpty();
+
+	//output: prints all the edes of the graph
+	void PrintGraph();
+
+	//makes an empty graph
 	void MakeEmptyGraph(); 
 
+	//output:returns the numbers of vertex
 	int GetAmountOfVertex();
 
-	//int GetAmountOfArcs();
-
+	//output: return the trasposed graph
 	Graph* Transpose();
 
 	//input: vertex u, vertex v

@@ -10,6 +10,16 @@ Graph::Graph(int n)
 	MakeEmptyGraph();
 }
 
+Graph::~Graph()
+{
+	for (int i = 1; i <= m_NumberOfVertex; i++)
+	{
+		delete m_Graph[i];
+	}
+
+	delete[] m_Graph;
+}
+
 Graph* Graph::Transpose()
 {
 	Graph* transposedGraph = new Graph(m_NumberOfVertex+1);
@@ -27,7 +37,13 @@ Graph* Graph::Transpose()
 	return transposedGraph;
 }
 
-void Graph::printGraph()
+bool Graph::IsEmpty()
+{
+	return m_NumberOfVertex == 0;
+}
+
+
+void Graph::PrintGraph()
 {
 	bool hasPrintedALine = false;
 	for (int i = 1; i <= m_NumberOfVertex; i++)
