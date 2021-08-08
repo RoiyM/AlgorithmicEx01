@@ -123,12 +123,12 @@ bool List::IsEmpty()
     return m_Head == nullptr;
 }
 
-node* List::GetHead()const
+node* List::GetHead()
 {
     return m_Head;
 }
 
-node* List::GetTail()const
+node* List::GetTail()
 {
     return m_Tail;
 }

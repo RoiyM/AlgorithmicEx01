@@ -1,6 +1,8 @@
 #include "Graph.h"
 #include "Queue.h"
 #include "List.h"
+#include<iostream>
+using namespace std;
 
 Graph::Graph(int n)
 {
@@ -10,9 +12,9 @@ Graph::Graph(int n)
 
 Graph* Graph::Transpose()
 {
-	Graph* transposedGraph = new Graph(m_NumberOfVertex);
+	Graph* transposedGraph = new Graph(m_NumberOfVertex+1);
 
-	for (int i = 0; i < m_NumberOfVertex; i++)
+	for (int i = 1; i <= m_NumberOfVertex; i++)
 	{
 		node* current = this->GetAdjList(i)->GetHead();
 		while (current != nullptr)
@@ -25,11 +27,32 @@ Graph* Graph::Transpose()
 	return transposedGraph;
 }
 
+void Graph::printGraph()
+{
+	bool hasPrintedALine = false;
+	for (int i = 1; i <= m_NumberOfVertex; i++)
+	{
+		node* current = m_Graph[i]->GetHead();
+		while (current != nullptr)
+		{
+			hasPrintedALine = true;
+			cout << "(" << i << "," << current->data << ") ";
+			current = current->next;
+		}
+		if(hasPrintedALine)
+		{ 
+			cout << endl;
+		}
+		hasPrintedALine = false;
+	}
+}
+
 
 void Graph::MakeEmptyGraph()
 {
-	m_Graph = new List * [m_NumberOfVertex];
-	for (int i = 0; i < m_NumberOfVertex; i++)
+	m_Graph = new List * [m_NumberOfVertex+1];
+	m_Graph[0] = nullptr;
+	for (int i = 1; i <= m_NumberOfVertex; i++)
 	{
 		m_Graph[i] = new List();
 	}
@@ -73,9 +96,9 @@ void Graph::RemoveEdge(int u, int v)
 int* Graph::BFS(int s)
 {
 	Queue queue;
-	int* dArray = new int[m_NumberOfVertex];
-	int* pArray = new int[m_NumberOfVertex];
-	for (int i = 0; i < m_NumberOfVertex; i++)
+	int* dArray = new int[m_NumberOfVertex+1];
+	int* pArray = new int[m_NumberOfVertex+1];
+	for (int i = 1; i <= m_NumberOfVertex; i++)
 	{
 		dArray[i] = inf;
 		pArray[1] = inf;
@@ -99,8 +122,6 @@ int* Graph::BFS(int s)
 			}
 			current = current->next;
 		}
-
-		delete adjList;
 	}
 
 	delete[] pArray;

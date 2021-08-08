@@ -11,6 +11,8 @@ public :
 	
 	Graph(int n);
 
+	void printGraph();
+
 	void MakeEmptyGraph(); 
 
 	int GetAmountOfVertex();

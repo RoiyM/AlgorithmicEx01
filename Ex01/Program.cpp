@@ -6,15 +6,6 @@
 #include "Graph.h"
 using namespace std;
 
-void HandleFailFileOpen(ios& file)
-{
-	if (!file.good())
-	{
-		cout << "The File could not open!";
-		exit(1);
-	}
-}
-
 void HandleWrongInput()
 {
 	cout << "invalid input";
@@ -26,61 +17,74 @@ bool IsInRange(int num, int min, int max)
 	return (num >= min && num <= max);
 }
 
-void ReadGraph(Graph& io_Graph)
+void ReadGraph(Graph* io_Graph)
 {
 	int x, y;
 	while (!cin.eof())
 	{
 		cin >> x;
-		if (!IsInRange(x, 1, io_Graph.GetAmountOfVertex()))
+		if (!IsInRange(x, 1, io_Graph->GetAmountOfVertex()))
 		{
 			HandleWrongInput();
 		}
 		cin >> y;
-		if (!IsInRange(y, 1, io_Graph.GetAmountOfVertex()))
+		if (!IsInRange(y, 1, io_Graph->GetAmountOfVertex()))
 		{
 			HandleWrongInput();
 		}
-		io_Graph.AddEdge(x, y);
+		if (cin.eof())
+		{
+			break;
+		}
+		io_Graph->AddEdge(x, y);
 	}
 }
 
-Graph* FindShortestPathFromSToT(Graph graph, int s, int t)
+Graph* FindShortestPathFromSToT(Graph* graph, int s, int t)
 {
-	int* dArray = graph.BFS(s);
-	int n = graph.GetAmountOfVertex();
-
-	for (int i = 0; i < n; i++)
+	int* dArray = graph->BFS(s);
+	int n = graph->GetAmountOfVertex();
+	
+	for (int i = 1; i <= n; i++)
 	{
-		node* current = graph.GetAdjList(i)->GetHead();
+		node* current = graph->GetAdjList(i)->GetHead();
 		while (current != nullptr)
 		{
 			if (dArray[current->data] != dArray[i] + 1)
 			{
-				graph.RemoveEdge(i, current->data);
+				node* prev = current;
+				current = current->next;
+				graph->RemoveEdge(i, prev->data);
 			}
-			current = current->next;
+			else
+			{
+				current = current->next;
+			}
 		}
-	}
+	}//now g has become g_s
 
-	Graph* trasposedGraph = graph.Transpose(); //g^t
+	Graph* trasposedGraph = graph->Transpose(); //g_s^t
 	int* dArrayTrasposed = trasposedGraph->BFS(t);
 
-	for (int i = 0; i < n; i++)
+	for (int i = 1; i <= n; i++)
 	{
 		if (dArrayTrasposed[i] == Graph::inf)
 		{
 			node* current = trasposedGraph->GetAdjList(i)->GetHead();
 			while (current != nullptr)
 			{
-				graph.RemoveEdge(i, current->data);
+				node* prev = current;
 				current = current->next;
+				trasposedGraph->RemoveEdge(i, prev->data);
 			}
 		}
-	}//now g^t=h^t
+	}//now g_h^t has become h^t
 
-	return trasposedGraph->Transpose(); //h
+	Graph* hTransposeGraph = trasposedGraph->Transpose();//h
 
+	delete trasposedGraph;
+
+	return hTransposeGraph; 
 }
 
 int main()
@@ -94,8 +98,10 @@ int main()
 	{
 		HandleWrongInput();
 	}
-	Graph graph(n);
+	Graph* graph = new Graph(n);
 	ReadGraph(graph);
+
+	graph->printGraph();
 
 	auto start = chrono::high_resolution_clock::now();
 	// unsync the I/O of C and C++.
@@ -106,12 +112,11 @@ int main()
 	double time_taken =
 		chrono::duration_cast<chrono::nanoseconds>(end - start).count();
 	time_taken *= 1e-9;
-	ofstream myfile("Measure.txt"); // The name of the file
-	HandleFailFileOpen(myfile);
+	
+	cout << "Time taken by function <FindShortestPathFromSToT> is : " << fixed
+		<< time_taken << setprecision(9) << " sec" << endl;
 
-	myfile << "Time taken by function <name-of-fun> is : " << fixed
-		<< time_taken << setprecision(9);
-	myfile << " sec" << endl;
-	myfile.close();
-
+	resGraph->printGraph();
+	delete graph;
+	delete resGraph;
 }

@@ -361,3 +361,21 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/tests/test_res7.txt
+/tests/test_res6.txt
+/tests/test_res5.txt
+/tests/test_res4.txt
+/tests/test_res3.txt
+/tests/test_res2.txt
+/tests/test_res1.txt
+/tests/test_res0.txt
+/tests/test_data7.txt
+/tests/test_data6.txt
+/tests/test_data5.txt
+/tests/test_data4.txt
+/tests/test_data3.txt
+/tests/test_data2.txt
+/tests/test_data1.txt
+/tests/test_data0.txt
+/Error tests
+/Ex01/Measure.txt

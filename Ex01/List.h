@@ -44,9 +44,9 @@ public:
     bool IsEmpty();
 
 
-    node* GetHead()const;
+    node* GetHead();
 
-    node* GetTail()const;
+    node* GetTail();
 
     void AddToHead(int i_DataToAdd);
 
