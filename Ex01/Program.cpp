@@ -101,8 +101,6 @@ int main()
 	Graph* graph = new Graph(n);
 	ReadGraph(graph);
 
-	graph->printGraph();
-
 	auto start = chrono::high_resolution_clock::now();
 	// unsync the I/O of C and C++.
 	ios_base::sync_with_stdio(false);
